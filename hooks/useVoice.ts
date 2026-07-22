@@ -5,25 +5,23 @@ export function useVoice() {
   const [transcript, setTranscript] = useState('');
   const [isSupported, setIsSupported] = useState(false);
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      setIsSupported(!!SpeechRecognition);
-    }
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    setIsSupported(!!SR);
   }, []);
   const startListening = useCallback(() => {
     if (!isSupported) return;
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.onstart = () => setIsListening(true);
-    recognition.onresult = (event: any) => {
-      let finalTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript;
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const r = new SR();
+    r.onstart = () => setIsListening(true);
+    r.onresult = (e: any) => {
+      let t = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) t += e.results[i][0].transcript;
       }
-      if (finalTranscript) setTranscript(finalTranscript);
+      if (t) setTranscript(t);
     };
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
+    r.onend = () => setIsListening(false);
+    r.start();
   }, [isSupported]);
   return { transcript, isListening, isSupported, startListening };
 }
