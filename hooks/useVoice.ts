@@ -16,10 +16,8 @@ export function useVoice() {
 
   const startListening = useCallback(() => {
     if (!isSupported) return;
-
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-
     recognition.onstart = () => setIsListening(true);
     recognition.onresult = (event: any) => {
       let finalTranscript = '';
@@ -32,8 +30,5 @@ export function useVoice() {
     recognition.start();
   }, [isSupported]);
 
-  const stopListening = useCallback(() => setIsListening(false), []);
-  const clearTranscript = useCallback(() => setTranscript(''), []);
-
-  return { transcript, isListening, isSupported, startListening, stopListening, clearTranscript };
+  return { transcript, isListening, isSupported, startListening };
 }
