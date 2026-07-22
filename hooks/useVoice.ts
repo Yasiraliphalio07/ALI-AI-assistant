@@ -15,9 +15,7 @@ export function useVoice() {
     r.onstart = () => setIsListening(true);
     r.onresult = (e: any) => {
       let t = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) t += e.results[i][0].transcript;
-      }
+      for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) t += e.results[i][0].transcript;
       if (t) setTranscript(t);
     };
     r.onend = () => setIsListening(false);
