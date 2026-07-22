@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Message, ChatRequest } from '@/types';
+import { Message } from '@/types';
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
